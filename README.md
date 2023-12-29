@@ -1,29 +1,29 @@
 # tbSell
 
-## Description
-tbSell is a protocol built on top of tbPUB and TBBandwidth that allows anyone to
-publish orders without spam.
+## Terms
 
-## Product Categories
+### Product Categories
 To help locate different order categories, every seller has a set of high-level 
-product categories listed in their DID-DOC: 
+product categories listed in their DID-DOC
+
+### tbSell DID-DOC 
+A tbSell DID-Document is a Web5 DID-DOC with at least one service starting with tbSell.
+Following the tbSell are the product categories provided separated by a collin.
 ```
-[
-  {
-    "name": "tbsell:food:bank-data:etc"
-    "URI": "URI to service"
-  }
-]
+{
+    ...
+    "services": [
+      {
+        "name": "tbsell:food:bank-data:etc"
+        "URI": "URI to service"
+      }
+    ]
+}
 ```
 
-## Orders
-
-All orders are hosted by the seller at the route "tbsell".
-
-```did-dht:key/tbsell```
-
+### tbSell Order
 Orders are JSON objects that must contain at least a price, product name, and 
-the full product category:
+the entire product category. Communication between the buyer is not specified by this protocol but is supported:
 ```
 {
   "price": 1000
@@ -34,18 +34,23 @@ the full product category:
 
 ## tbSell Seller
 
-### Description
-A Seller is a hosted service that contains a list of orders for a set of product 
-categories. To be a discoverable Seller, the Seller hosts their DID-DHT key via 
-tbPUB. The bandwidth of their DID determines the number of orders that can be listed.
+### Abstract
+
+A Seller is a service that hosts a list of orders discoverable on the tbSell network. 
+
+### Joining the network
+To join the network, a seller must publish their DID-DHT key via TBBandwidth. The more bandwidth they have, the more orders they can host.
+
+### Hosting an Order
+All orders are hosted route "tbsell" as a JSON Array of tbSell Orders.
 
 ## tbSell Node
 
-### Description
-Runs a tbPUB node and gets a list of all the tbSeller did docs from TBBandwidth. 
-From the did-docs, it assembles a list of all available product categories. 
-When a product category is requested, it reaches out to all the tbSellers of that 
-category and obtains a list of offers.
+### Abstract
+A tbSell node gathers a list of all the available order categories and orders.
 
-### Requirements
-1. tbPUB Node
+### Discovering tbSell Sellers
+The tbSell node will query a tbPUB node for a list of all the Seller DIDs.
+
+### Accepting an Offer
+Accepting offers and Communication between the Buyer and Seller is not specified by this protocol but is supported.
